@@ -1,15 +1,24 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
+  <!-- <camera/> -->
+  <file-picker/>
+  <test-component/>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+// import Camera from './components/Camera.vue'
+import FilePicker from './components/FilePicker.vue'
+// import TestComponent from './components/TestComponent.vue'
+// import HelloWorld from './components/HelloWorld.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    // HelloWorld,
+    // Camera,
+    FilePicker,
+    // TestComponent
   }
 }
 </script>
