@@ -3,13 +3,19 @@
     <input type="file" @change="handleFileInputChange" ref="fileInput" style="display: none;" />
     <button @click="$refs.fileInput.click()">Open File Dialog</button>
     <p v-if="pickedFile">Picked File: {{ pickedFile.name }}</p>
-    <p v-if="fileMetadata">File Metadata: {{ fileMetadata }}</p>
+    <p v-if="fileMetadata">File Metadata:</p>
+    <ul v-if="fileMetadata">
+      <li>Name: {{ fileMetadata.name }}</li>
+      <li>Type: {{ fileMetadata.type }}</li>
+      <li>Size: {{ fileMetadata.size }} bytes</li>
+      <li>Last Modified: {{ formattedLastModified }}</li>
+    </ul>
     <p v-if="currentPosition">Current Position: Latitude {{ currentPosition.latitude }}, Longitude {{ currentPosition.longitude }}</p>
   </div>
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, computed } from 'vue';
 import { Geolocation } from '@capacitor/geolocation';
 
 export default defineComponent({
@@ -26,8 +32,13 @@ export default defineComponent({
       if (file) {
         pickedFile.value = file;
 
-        // Simulate getting file metadata
-        fileMetadata.value = `File size: ${file.size} bytes`;
+        // Get file metadata
+        fileMetadata.value = {
+          name: file.name,
+          type: file.type,
+          size: file.size,
+          lastModified: file.lastModified
+        };
 
         // Simulate getting geolocation
         try {
@@ -39,11 +50,22 @@ export default defineComponent({
       }
     };
 
+    // Computed property to format lastModified date
+    const formattedLastModified = computed(() => {
+      if (fileMetadata.value && fileMetadata.value.lastModified) {
+        const timestamp = fileMetadata.value.lastModified;
+        const date = new Date(timestamp);
+        return date.toLocaleString();
+      }
+      return '';
+    });
+
     return {
       handleFileInputChange,
       pickedFile,
       fileMetadata,
-      currentPosition
+      currentPosition,
+      formattedLastModified
     };
   }
 });
